@@ -1,34 +1,26 @@
 package com.example.noteroom.activities
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.noteroom.NoteViewModel
-import com.example.noteroom.NoteViewModelFactory
-import com.example.noteroom.R
-import com.example.noteroom.databinding.ActivityMainBinding
 import com.example.noteroom.databinding.ActivityNoteBinding
-import com.example.noteroom.room.NoteDb
 import com.example.noteroom.room.NoteObject
-import com.example.noteroom.room.NoteRepo
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NoteActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityNoteBinding.inflate(layoutInflater)
     }
-    private lateinit var noteViewModel : NoteViewModel
+    private val noteViewModel: NoteViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val noteRepo = NoteRepo(NoteDb.getDatabase(this).noteDao())
-        val viewModelFactory = NoteViewModelFactory(noteRepo)
-        noteViewModel = ViewModelProvider(this, viewModelFactory).get(NoteViewModel::class.java)
 
-
-        if(intent.hasExtra("note_id")){
+        if (intent.hasExtra("note_id")) {
             val noteId = intent.getIntExtra("note_id", 0)
             val noteTitle = intent.getStringExtra("note_title")
             val noteDescription = intent.getStringExtra("note_desc")
@@ -40,14 +32,19 @@ class NoteActivity : AppCompatActivity() {
                 val description = binding.editTextNoteDescription.text.toString()
 
                 if (title.isNotEmpty() && description.isNotEmpty()) {
-                    val newNote = NoteObject(id = noteId,noteTitle = title, noteDescription = description)
+                    val newNote =
+                        NoteObject(id = noteId, noteTitle = title, noteDescription = description)
                     noteViewModel.updateNote(newNote)
                     finish() // Close the activity after saving
                 } else {
-                    Toast.makeText(this, "Title and description cannot be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Title and description cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        }else{
+        } else {
 
             binding.buttonSaveNote.setOnClickListener {
                 val title = binding.editTextNoteTitle.text.toString()
@@ -58,7 +55,11 @@ class NoteActivity : AppCompatActivity() {
                     noteViewModel.addNote(newNote)
                     finish() // Close the activity after saving
                 } else {
-                    Toast.makeText(this, "Title and description cannot be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Title and description cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

@@ -10,25 +10,25 @@ abstract class NoteDb : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao
 
-
-    companion object {
-
-        @Volatile
-        private var INSTANCE: NoteDb? = null
-
-        fun getDatabase(context: Context): NoteDb {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    NoteDb::class.java,
-                    "note_db"
-                ).build()
-
-                INSTANCE = instance
-
-                // return instance
-                instance
-            }
-        }
-    }
+//
+//    companion object {
+//
+//        @Volatile
+//        private var INSTANCE: NoteDb? = null
+//
+//        fun getDatabase(context: Context): NoteDb {
+//            return INSTANCE ?: synchronized(this) {
+//                val instance = Room.databaseBuilder(
+//                    context.applicationContext,
+//                    NoteDb::class.java,
+//                    "note_db"
+//                ).build()
+//
+//                INSTANCE = instance
+//
+//                // return instance
+//                instance
+//            }
+//        }
+//    }
 }

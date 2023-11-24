@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -11,7 +12,8 @@ android {
     defaultConfig {
         applicationId = "com.example.noteroom"
         minSdk = 28
-        targetSdk = 33
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -56,6 +58,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // To use Kotlin annotation processing tool (kapt)
+    //noinspection KaptUsageInsteadOfKsp
     kapt("androidx.room:room-compiler:$roomVersion")
 
     // optional - Kotlin Extensions and Coroutines support for Room
@@ -63,4 +66,21 @@ dependencies {
 
     //ViewModel scope
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
+    //dagger-hilt
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    //viewmodel
+    implementation ("androidx.activity:activity-ktx:1.8.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+}
+
+hilt {
+    enableAggregatingTask = true
+}
+
+
+kapt {
+    correctErrorTypes = true
 }

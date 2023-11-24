@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.noteroom.room.NoteObject
 import com.example.noteroom.room.NoteRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NoteViewModel(private val noteRepo: NoteRepo) : ViewModel() {
+@HiltViewModel
+class NoteViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewModel() {
 
     val allNotes: LiveData<List<NoteObject>> = noteRepo.allNotes
 
